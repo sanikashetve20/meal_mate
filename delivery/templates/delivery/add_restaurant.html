@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Restaurant - Meal-Mate Admin</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/addrestaurant.css' %}">
+</head>
+<body>
+    <div class="container admin-container">
+        <div class="header">
+            <h1>Add Restaurant</h1>
+        </div>
+        <div class="main-content admin-main">
+            <div class="admin-form">
+                <form  method="POST" action="{% url 'add_restaurant' %}">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <label for="name">Restaurant Name:</label>
+                        <input type="text" id="name" name="name" required autofocus>
+                    </div>
+                    <div class="form-row">
+                        <label for="cuisines">Cuisines:</label>
+                        <input type="text" id="cuisines" name="cuisines" placeholder="e.g. North Indian, Chinese, South Indian" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="rating">Rating:</label>
+                        <input type="number" id="rating" name="rating" step="0.1" min="1" max="5" placeholder="4.5" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="picture">Picture URL:</label>
+                        <input type="url"
+                               id="picture"
+                               name="picture"
+                               placeholder="https://example.com/images/restaurant.jpg"
+                               class="picture-url-input"
+                               required>
+                    </div>
+                    <button type="submit" class="add-btn">ADD Restaurant</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

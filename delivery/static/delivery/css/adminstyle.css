@@ -1,0 +1,287 @@
+/* ====================== ADMIN STYLES ====================== */
+
+.admin-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.admin-main {
+    padding: 50px 40px;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.admin-card {
+    text-decoration: none;
+    color: inherit;
+}
+
+.admin-btn {
+    background: white;
+    border: 3px solid #ff6b6b;
+    color: #333;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 28px 20px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    line-height: 1.4;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.admin-btn:hover {
+    background: #ff6b6b;
+    color: white;
+    border-color: #ff6b6b;
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(255, 107, 107, 0.3);
+}
+
+/* Form Styles for Add & Update Pages */
+.admin-form {
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.admin-form .form-group {
+    margin-bottom: 22px;
+}
+
+.admin-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.admin-form input,
+.admin-form textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+}
+
+.admin-form button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.admin-form button:hover {
+    transform: scale(1.03);
+    background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .admin-main {
+        padding: 40px 25px;
+    }
+}
+
+/* ====================== ADD RESTAURANT PAGE ====================== */
+
+.admin-form {
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 20px;
+}
+
+.form-row label {
+    width: 180px;                    /* Fixed width for label */
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+    flex-shrink: 0;                  /* Prevent label from shrinking */
+    text-align: justify;
+}
+
+.form-row input {
+    flex: 1;
+    padding: 14px 16px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.form-row input:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+}
+
+/* File Upload Group */
+.file-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-input {
+    display:none;
+}
+
+.browse-label {
+    padding: 12px 18px;
+    background: white;
+    color: #333;
+    border: 2px solid #ff6b6b;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.browse-label:hover {
+    background: #f79d9d;
+    color: white;
+}
+
+/* ADD RESTAURANT Button */
+.add-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, #ff6b6b, #e8a288);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: all 0.3s;
+}
+
+.add-btn:hover {
+    transform: scale(1.03);
+    background: linear-gradient(90deg, #ff6b6b, #e8a288);
+}
+
+/* ====================== ADD ITEM PAGE ====================== */
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 20px;
+}
+
+.form-row label {
+    width: 180px;
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.form-row input,
+.form-row textarea {
+    flex: 1;
+    padding: 14px 16px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    resize: vertical;
+}
+
+.form-row input:focus,
+.form-row textarea:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+}
+
+.form-row textarea {
+    min-height: 80px;
+}
+
+/* File Upload */
+.file-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-input {
+    display: none;
+}
+
+.browse-label {
+    padding: 12px 28px;
+    background: white;
+    color: #333;
+    border: 2px solid #ff6b6b;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.browse-label:hover {
+    background: #ff6b6b;
+    color: white;
+}
+
+/* ADD ITEM Button */
+.add-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: all 0.3s;
+}
+
+.add-btn:hover {
+    transform: scale(1.03);
+}

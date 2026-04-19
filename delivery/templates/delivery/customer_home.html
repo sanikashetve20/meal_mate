@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants - Meal-Mate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left-group">
+                <img src="{% static 'delivery/images/meal_mate.png' %}" class="logo-img">
+                <span class="welcome-text">Welcome, <strong>{{ username|default:'Guest' }}!</strong></span>
+            </div>
+
+            <div class="nav-right">
+                <a href="{% url 'show_cart_page' username %}" class="nav-link">View Cart</a>
+                <a href="{% url 'signin' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Partner Restaurants</h1>
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 110px;">Image</th>
+                        <th>Restaurant Name</th>
+                        <th>Cuisines</th>
+                        <th style="width: 100px;">Rating</th>
+                        <th style="width: 160px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for restaurant in restaurants %}
+                    <tr>
+                        <td><img src="{{ restaurant.picture|default:'https://via.placeholder.com/100' }}" class="thumb-img"></td>
+                        <td><strong>{{ restaurant.name }}</strong></td>
+                        <td>{{ restaurant.cuisines }}</td>
+                        <td><b style="color: #f1c40f;">{{ restaurant.rating }} ★</b></td>
+                        <td>
+                            <a href="{% url 'customer_menu' restaurant.id username %}" class="btn-action btn-view">View Menu</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Restaurant - {{ restaurant.name }} | Meal-Mate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/update_restaurant.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Update Restaurant Information</h1>
+            <p>Editing: <strong>{{ restaurant.name }}</strong></p>
+        </div>
+
+        <div class="form-container">
+            <form method="POST" action="{% url 'update_restaurant' restaurant.id %}">
+                {% csrf_token %}
+
+                {% if error %}
+                    <div class="error-message">{{ error }}</div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="name">Restaurant Name:</label>
+                    <input type="text" id="name" name="name" 
+                           value="{{ restaurant.name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cuisines">Cuisines:</label>
+                    <input type="text" id="cuisines" name="cuisines" 
+                           value="{{ restaurant.cuisines }}" 
+                           placeholder="e.g. North Indian, Chinese, South Indian" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <input type="number" id="rating" name="rating" 
+                           step="0.1" min="1" max="5" 
+                           value="{{ restaurant.rating }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="picture">Picture URL:</label>
+                    <input type="url" id="picture" name="picture" 
+                           value="{{ restaurant.picture }}" 
+                           placeholder="https://example.com/restaurant.jpg">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="update-btn">Update Restaurant</button>
+                    <a href="{% url 'show_restaurant_page' %}" class="cancel-btn">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

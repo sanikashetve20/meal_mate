@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Success - MealMate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
+</head>
+<body>
+    <div class="container" style="text-align: center; margin-top: 100px;">
+        <div class="table-card" style="padding: 50px; max-width: 600px; margin: 0 auto;">
+            <div style="font-size: 50px; color: var(--veg);">✅</div>
+            <h1 style="margin-top: 20px;">Order Placed Successfully!</h1>
+            <p style="color: var(--text-muted);">Thank you, <strong>{{ username }}</strong>. Your food is being prepared.</p>
+            
+            <div style="text-align: left; margin: 30px 0; border-top: 1px solid #eee; padding-top: 20px;">
+                <h3 style="font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted);">Order Summary:</h3>
+                {% for item in cart_items %}
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>{{ item.name }} ({{ item.restaurant.name }})</span>
+                        <strong>₹{{ item.price }}</strong>
+                    </div>
+                {% endfor %}
+                <hr style="border: none; border-top: 1px dashed #ccc;">
+                <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 800;">
+                    <span>Total Paid:</span>
+                    <span>₹{{ total_price }}</span>
+                </div>
+            </div>
+
+            <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="logout-btn" style="display: inline-block;">Order More Food</a>
+        </div>
+    </div>
+</body>
+</html>

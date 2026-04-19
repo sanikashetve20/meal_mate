@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ restaurant.name }} - Menu | Meal-Mate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/menu.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="top-nav">
+            <a href="{% url 'show_restaurant_page' %}" class="back-link">
+                <span class="arrow">←</span> Back to Restaurant List
+            </a>
+        </div>
+
+        <div class="restaurant-header">
+            <img src="{{ restaurant.picture|default:'https://via.placeholder.com/400x250?text=Restaurant' }}" 
+                 alt="{{ restaurant.name }}" class="restaurant-image">
+            <div class="restaurant-info">
+                <h1>{{ restaurant.name }}</h1>
+                <h3>Cuisine: {{ restaurant.cuisines }}</h3>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <h2>Current Menu Items</h2>
+            <p>Manage existing dishes for this restaurant.</p>
+        </div>
+
+        <div class="table-container">
+            <table class="menu-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Item Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in menu_items %}
+                    <tr>
+                        <td>
+                            <img src="{{ item.picture|default:'https://via.placeholder.com/100?text=No+Dish' }}" 
+                                 alt="{{ item.name }}" class="item-image">
+                        </td>
+                        <td><strong>{{ item.name }}</strong></td>
+                        <td class="desc-cell">{{ item.description|truncatewords:12 }}</td>
+                        <td><span class="price-tag">{{ item.price }}</span></td>
+                        <td>
+                            <span class="{% if item.is_veg %}veg-badge{% else %}nonveg-badge{% endif %}">
+                                {% if item.is_veg %}VEG{% else %}NON-VEG{% endif %}
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <a href="{% url 'update_menuItem_page' item.id %}" class="edit-btn">Edit</a>
+                            <form method="POST" action="{% url 'delete_menuItem' item.id %}"
+                                    style="display: inline;"
+                                    onsubmit="return confirm('Are you sure you want to delete this menu item?');">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-btn">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="no-items">No menu items found. Add your first dish below!</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">
+            <h2>Add New Menu Item</h2>
+            <p>Expand the menu with a new delicious offering.</p>
+        </div>
+
+        <div class="form-card">
+            <form method="POST" action="{% url 'restaurant_menu' restaurant.id %}">
+                {% csrf_token %}
+
+                {% if error %}
+                    <div class="error-message">{{ error }}</div>
+                {% endif %}
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Item Name</label>
+                        <input type="text" name="name" id="name" placeholder="e.g. Butter Chicken" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" name="price" id="price" placeholder="299" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" rows="3" placeholder="Describe the ingredients and taste..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="is_veg" id="is_veg"> 
+                        <span class="checkmark"></span>
+                        This item is Vegetarian
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="picture">Image URL</label>
+                    <input type="url" name="picture" id="picture" 
+                           placeholder="https://example.com/dish.jpg">
+                </div>
+
+                <button type="submit" class="add-btn">🚀 Add Dish to Menu</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

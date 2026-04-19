@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - MealMate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
+</head>
+<body style="background: var(--bg-gradient); min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+
+    <div class="table-card" style="max-width: 500px; width: 90%; padding: 40px; text-align: center;">
+        <img src="{% static 'delivery/images/meal_mate.png' %}" style="height: 60px; margin-bottom: 20px;">
+        
+        <h2 style="color: var(--text-main);">Confirm Your Order</h2>
+        <p style="color: var(--text-muted);">You are about to pay for your delicious meal.</p>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin: 25px 0;">
+            <span style="display: block; font-size: 0.9rem; color: var(--text-muted);">Total Amount</span>
+            <span style="font-size: 2rem; font-weight: 800; color: var(--text-main);">₹{{ total_price }}</span>
+        </div>
+
+        <button id="rzp-button1" class="btn-checkout" style="width: 100%;">Pay Securely Now</button>
+        <br><br>
+        <a href="{% url 'show_cart_page' username %}" style="color: var(--primary); text-decoration: none; font-weight: 600;">Back to Cart</a>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+    var options = {
+        "key": "{{ razorpay_key_id }}", 
+        "amount": "{{ amount_paise }}", 
+        "currency": "INR",
+        "name": "MealMate",
+        "description": "Food Order Payment",
+        "order_id": "{{ order_id }}", 
+        "handler": function (response){
+            // On success, redirect to the orders page
+            window.location.href = "{% url 'view_orders' username %}";
+        },
+        "prefill": {
+            "name": "{{ username }}",
+        },
+        "theme": {
+            "color": "#ff7675"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    document.getElementById('rzp-button1').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+    </script>
+</body>
+</html>

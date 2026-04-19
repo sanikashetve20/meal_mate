@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ restaurant.name }} - Menu</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left-group">
+                <img src="{% static 'delivery/images/meal_mate.png' %}" class="logo-img">
+                <span class="welcome-text">Welcome, <strong>{{ username|default:'Guest' }}!</strong></span>
+            </div>
+
+            <div class="nav-right">
+                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="nav-link">Home</a>
+                <a href="{% url 'show_cart_page' username %}" class="nav-link">View Cart</a>
+                <a href="{% url 'signin' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="rest-header">
+            <img src="{{ restaurant.picture|default:'https://via.placeholder.com/400x250' }}" class="rest-img-lg">
+            <div class="rest-info">
+                <h1 style="margin:0;">{{ restaurant.name }}</h1>
+                <p style="color: #636e72; margin-top: 5px;">{{ restaurant.cuisines }}</p>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Dish</th>
+                        <th style="width: 180px;">Item Name</th>
+                        <th>Description</th>
+                        <th style="width: 100px;">Price</th>
+                        <th style="width: 120px;">Type</th>
+                        <th style="width: 150px;">Order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in menu_items %}
+                    <tr>
+                        <td><img src="{{ item.picture|default:'https://via.placeholder.com/100' }}" class="thumb-img"></td>
+                        <td><strong>{{ item.name }}</strong></td>
+                        <td><div class="desc-box">{{ item.description }}</div></td>
+                        <td><strong>{{ item.price }}</strong></td>
+                        <td>
+                            <span class="badge {% if item.is_veg %}veg{% else %}nonveg{% endif %}">
+                                {% if item.is_veg %}VEG{% else %}NON-VEG{% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <form method="POST" action="{% url 'add_to_cart' item.id username %}">
+                                {% csrf_token %}
+                                <button type="submit" onclick="return confirm('Are you sure you want to add this item to your cart?');" class="btn-action btn-add">Add to Cart</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

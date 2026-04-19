@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Menu Item - {{ menu_item.name }} | Meal-Mate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/update_menuItem.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Update Menu Item Information</h1>
+            <p>Editing: <strong>{{ item.name }}</strong></p>
+        </div>
+
+        <div class="form-container">
+            <form method="POST" action="{% url 'update_menuItem' item.id %}">
+                {% csrf_token %}
+
+                {% if error %}
+                    <div class="error-message">{{ error }}</div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="name">Item Name:</label>
+                    <input type="text" id="name" name="name" 
+                           value="{{ item.name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" 
+                           value="{{ item.description }}" 
+                           placeholder="Enter a brief description of the menu item" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" 
+                           value="{{ item.price }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="is_veg">Is Vegetarian:</label>
+                    <input type="checkbox" id="is_veg" name="is_veg"
+                           {% if item.is_veg %}checked{% endif %}>
+                </div>
+
+                <div class="form-group">
+                    <label for="picture">Image URL:</label>
+                    <input type="url" id="picture" name="picture" 
+                           value="{{ item.picture }}" 
+                           placeholder="https://example.com/menu_item.jpg">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="update-btn">Update Menu Item</button>
+                    <a href="{% url 'restaurant_menu' item.restaurant.id %}" class="cancel-btn">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

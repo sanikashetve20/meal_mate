@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal-Mate - Admin Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/admin_home.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <img src="{% static 'delivery/images/meal_mate.png' %}" alt="Meal-Mate Logo" class="logo-img">
+                <span class="welcome-text">
+                    Welcome, <strong>{{ username|default:'Admin'|capfirst }}!</strong>
+                </span>
+            </div>
+
+            <div class="nav-right">
+                <a href="{% url 'signin' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        
+        <div class="welcome-section">
+            <h1>Welcome, Admin!</h1>
+            <p>Manage and explore restaurants with ease.</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="admin-card">
+                <div class="card-icon-container">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3210/3210080.png" alt="Explore" class="card-icon-img">
+                </div>
+                <h2>Explore Restaurants</h2>
+                <p>View and manage all registered restaurants.</p>
+                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="card-btn">View Restaurants</a>
+            </div>
+
+            <div class="admin-card">
+                <div class="card-icon-container plus-circle">
+                    <span>+</span>
+                </div>
+                <h2>Add Restaurant</h2>
+                <p>Add new restaurants to the Meal-Mate platform.</p>
+                <a href="{% url 'restaurant_page' %}" class="card-btn">Add Restaurant</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

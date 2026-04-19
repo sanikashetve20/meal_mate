@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - MealMate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left-group">
+                <a href="{% url 'show_restaurant_page' %}?username={{ username }}">
+                    <img src="{% static 'delivery/images/meal_mate.png' %}" alt="Logo" class="logo-img">
+                </a>
+                <div class="welcome-text">
+                    Welcome, <strong>{{ username }}</strong>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="nav-link">Home</a>
+                <a href="{% url 'signin' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="color: var(--white); margin-bottom: 20px;">Your Shopping Cart</h1>
+
+        {% if items %}
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Item</th>
+                            <th style="width: 30%;">Name</th>
+                            <th style="width: 20%;">Restaurant</th>
+                            <th style="width: 15%;">Price</th>
+                            <th style="width: 20%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>
+                                <img src="{{ item.picture }}" alt="{{ item.name }}" class="thumb-img">
+                            </td>
+                            <td>
+                                <strong>{{ item.name }}</strong><br>
+                                <span class="badge {% if item.is_veg %}veg{% else %}nonveg{% endif %}">
+                                    {% if item.is_veg %}VEG{% else %}NON-VEG{% endif %}
+                                </span>
+                            </td>
+                            <td>{{ item.restaurant.name }}</td>
+                            <td><strong>₹{{ item.price }}</strong></td>
+                            <td>
+                                <a href="{% url 'remove_from_cart' item.id username %}" class="btn-action btn-remove">Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cart-summary">
+                <div class="total-info">
+                    <span style="color: var(--text-muted);">Total Payable:</span>
+                    <div class="total-amount">₹{{ total_price }}</div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a href="{% url 'clear_cart' username %}" class="btn-action btn-remove" style="padding: 12px 20px;">Clear Cart</a>
+                    
+                    <form method="GET" action="{% url 'checkout' username %}" style="margin: 0;">
+                        {% csrf_token %}
+                        <button class="btn-checkout">Proceed to Checkout</button>
+                    </form>
+                </div>
+            </div>
+
+        {% else %}
+            <div class="empty-cart-msg">
+                <h2>Your cart is looking a little lonely...</h2>
+                <p>Add some delicious food from your favorite restaurants!</p>
+                <br>
+                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="logout-btn">Browse Restaurants</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
