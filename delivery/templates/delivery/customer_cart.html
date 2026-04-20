@@ -1,95 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Cart - MealMate</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
+<!doctype html>
+{% extends 'delivery/base.html' %}
+{% load static %}
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-left-group">
-                <a href="{% url 'show_restaurant_page' %}?username={{ username }}">
-                    <img src="{% static 'delivery/images/meal_mate.png' %}" alt="Logo" class="logo-img">
-                </a>
-                <div class="welcome-text">
-                    Welcome, <strong>{{ username }}</strong>
-                </div>
-            </div>
-            
-            <div class="nav-right">
-                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="nav-link">Home</a>
-                <a href="{% url 'signin' %}" class="logout-btn">Logout</a>
-            </div>
-        </div>
-    </nav>
+{% block title %}My Cart - Meal-Mate{% endblock %}
 
-    <div class="container">
-        <h1 style="color: var(--white); margin-bottom: 20px;">Your Shopping Cart</h1>
-
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 animate-up">
+        <h1 class="fw-bold mb-0">Your <span class="text-coral">Cart</span></h1>
         {% if items %}
-            <div class="table-card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 15%;">Item</th>
-                            <th style="width: 30%;">Name</th>
-                            <th style="width: 20%;">Restaurant</th>
-                            <th style="width: 15%;">Price</th>
-                            <th style="width: 20%;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in items %}
-                        <tr>
-                            <td>
-                                <img src="{{ item.picture }}" alt="{{ item.name }}" class="thumb-img">
-                            </td>
-                            <td>
-                                <strong>{{ item.name }}</strong><br>
-                                <span class="badge {% if item.is_veg %}veg{% else %}nonveg{% endif %}">
+            <a href="{% url 'clear_cart' username %}" class="text-danger small fw-bold text-decoration-none">
+                <i class="bi bi-trash"></i> Clear All
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="row g-4">
+        {% if items %}
+            <div class="col-lg-8 animate-up">
+                {% for item in items %}
+                <div class="meal-card p-3 mb-3 border-0 shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ item.picture }}" alt="{{ item.name }}" 
+                             class="rounded-3 shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+                        
+                        <div class="ms-3 flex-grow-1">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="fw-bold mb-0">{{ item.name }}</h5>
+                                <span class="fw-bold text-dark">₹{{ item.price }}</span>
+                            </div>
+                            <p class="text-muted small mb-2">{{ item.restaurant.name }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge {% if item.is_veg %}bg-success{% else %}bg-danger{% endif %}" style="font-size: 0.6rem;">
                                     {% if item.is_veg %}VEG{% else %}NON-VEG{% endif %}
                                 </span>
-                            </td>
-                            <td>{{ item.restaurant.name }}</td>
-                            <td><strong>₹{{ item.price }}</strong></td>
-                            <td>
-                                <a href="{% url 'remove_from_cart' item.id username %}" class="btn-action btn-remove">Remove</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                <a href="{% url 'remove_from_cart' item.id username %}" class="text-danger small text-decoration-none fw-medium">
+                                    Remove
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
 
-            <div class="cart-summary">
-                <div class="total-info">
-                    <span style="color: var(--text-muted);">Total Payable:</span>
-                    <div class="total-amount">₹{{ total_price }}</div>
-                </div>
-                
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <a href="{% url 'clear_cart' username %}" class="btn-action btn-remove" style="padding: 12px 20px;">Clear Cart</a>
+            <div class="col-lg-4 animate-up" style="animation-delay: 0.1s;">
+                <div class="meal-card p-4 border-0 shadow-sm sticky-top" style="top: 100px; z-index: 10;">
+                    <h4 class="fw-bold mb-4">Order Summary</h4>
                     
-                    <form method="GET" action="{% url 'checkout' username %}" style="margin: 0;">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Item Total</span>
+                        <span>₹{{ total_price }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Delivery Fee</span>
+                        <span class="text-success fw-medium">FREE</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="fw-bold fs-5">Grand Total</span>
+                        <span class="fw-bold fs-5 text-coral">₹{{ total_price }}</span>
+                    </div>
+
+                    <form method="GET" action="{% url 'checkout' username %}">
                         {% csrf_token %}
-                        <button class="btn-checkout">Proceed to Checkout</button>
+                        <button type="submit" class="btn btn-coral w-100 py-3 fw-bold rounded-pill shadow-sm">
+                            PROCEED TO PAY
+                        </button>
                     </form>
+                    
+                    <div class="text-center mt-3">
+                        <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="text-muted small text-decoration-none">
+                            ← Add more items
+                        </a>
+                    </div>
                 </div>
             </div>
 
         {% else %}
-            <div class="empty-cart-msg">
-                <h2>Your cart is looking a little lonely...</h2>
-                <p>Add some delicious food from your favorite restaurants!</p>
-                <br>
-                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="logout-btn">Browse Restaurants</a>
+            <div class="col-12 text-center py-5 animate-up">
+                <div class="display-1 mb-4">🛒</div>
+                <h2 class="fw-bold">Your cart is looking a little lonely...</h2>
+                <p class="text-muted mb-4">Add some delicious food from your favorite restaurants!</p>
+                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="btn btn-coral px-5 py-3 fw-bold rounded-pill shadow-sm">
+                    Browse Restaurants
+                </a>
             </div>
         {% endif %}
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,58 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meal-Mate - Admin Dashboard</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'delivery/css/admin_home.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+<!doctype html>
+{% extends 'delivery/base.html' %}
+{% load static %}
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-left">
-                <img src="{% static 'delivery/images/meal_mate.png' %}" alt="Meal-Mate Logo" class="logo-img">
-                <span class="welcome-text">
-                    Welcome, <strong>{{ username|default:'Admin'|capfirst }}!</strong>
-                </span>
-            </div>
+{% block title %}Admin Dashboard - Meal-Mate{% endblock %}
 
-            <div class="nav-right">
-                <a href="{% url 'signin' %}" class="logout-btn">Logout</a>
-            </div>
-        </div>
-    </nav>
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5 animate-up">
+        <h1 class="display-4 fw-bold">Admin <span class="text-coral">Dashboard</span></h1>
+        <p class="text-muted fs-5">Manage your magical kitchen network with ease.</p>
+    </div>
 
-    <div class="dashboard-container">
+    <div class="row g-4 justify-content-center animate-up" style="animation-delay: 0.1s;">
         
-        <div class="welcome-section">
-            <h1>Welcome, Admin!</h1>
-            <p>Manage and explore restaurants with ease.</p>
+        <div class="col-12 col-md-5 col-lg-4">
+            <div class="meal-card h-100 p-5 text-center">
+                <div class="mb-4">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3210/3210080.png" 
+                         alt="Explore" class="img-fluid" style="height: 100px; opacity: 0.9;">
+                </div>
+                <h2 class="fw-bold h4">Explore Restaurants</h2>
+                <p class="text-muted mb-4 small">View, edit, or remove restaurants currently registered on the platform.</p>
+                <div class="mt-auto">
+                    <a href="{% url 'show_restaurant_page' %}?username={{ username }}" 
+                       class="btn btn-coral w-100 py-3 fw-bold rounded-pill shadow-sm">
+                       View All
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <div class="card-grid">
-            <div class="admin-card">
-                <div class="card-icon-container">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3210/3210080.png" alt="Explore" class="card-icon-img">
+        <div class="col-12 col-md-5 col-lg-4">
+            <div class="meal-card h-100 p-5 text-center">
+                <div class="mb-4 d-flex justify-content-center">
+                    <div class="rounded-circle border border-dark border-3 d-flex align-items-center justify-content-center" 
+                         style="width: 100px; height: 100px; font-size: 3.5rem; font-weight: 300;">
+                        +
+                    </div>
                 </div>
-                <h2>Explore Restaurants</h2>
-                <p>View and manage all registered restaurants.</p>
-                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="card-btn">View Restaurants</a>
-            </div>
-
-            <div class="admin-card">
-                <div class="card-icon-container plus-circle">
-                    <span>+</span>
+                <h2 class="fw-bold h4">Add Restaurant</h2>
+                <p class="text-muted mb-4 small">Expand the Meal-Mate family by onboarding a new partner kitchen.</p>
+                <div class="mt-auto">
+                    <a href="{% url 'restaurant_page' %}" 
+                       class="btn btn-coral w-100 py-3 fw-bold rounded-pill shadow-sm">
+                       Add New
+                    </a>
                 </div>
-                <h2>Add Restaurant</h2>
-                <p>Add new restaurants to the Meal-Mate platform.</p>
-                <a href="{% url 'restaurant_page' %}" class="card-btn">Add Restaurant</a>
             </div>
         </div>
 
     </div>
-
-</body>
-</html>
+</div>
+{% endblock %}

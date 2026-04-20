@@ -1,56 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurants - Meal-Mate</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
-</head>
-<body>
+<!doctype html>
+{% extends 'delivery/base.html' %}
+{% load static %}
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-left-group">
-                <img src="{% static 'delivery/images/meal_mate.png' %}" class="logo-img">
-                <span class="welcome-text">Welcome, <strong>{{ username|default:'Guest' }}!</strong></span>
-            </div>
+{% block title %}Partner Restaurants - Meal-Mate{% endblock %}
 
-            <div class="nav-right">
-                <a href="{% url 'show_cart_page' username %}" class="nav-link">View Cart</a>
-                <a href="{% url 'signin' %}" class="logout-btn">Logout</a>
-            </div>
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 animate-up">
+        <div>
+            <h1 class="fw-bold mb-0">Partner <span class="text-coral">Restaurants</span></h1>
+            <p class="text-muted">Discover the best magical kitchens in your city</p>
         </div>
-    </nav>
-
-    <div class="container">
-        <h1>Partner Restaurants</h1>
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 110px;">Image</th>
-                        <th>Restaurant Name</th>
-                        <th>Cuisines</th>
-                        <th style="width: 100px;">Rating</th>
-                        <th style="width: 160px;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for restaurant in restaurants %}
-                    <tr>
-                        <td><img src="{{ restaurant.picture|default:'https://via.placeholder.com/100' }}" class="thumb-img"></td>
-                        <td><strong>{{ restaurant.name }}</strong></td>
-                        <td>{{ restaurant.cuisines }}</td>
-                        <td><b style="color: #f1c40f;">{{ restaurant.rating }} ★</b></td>
-                        <td>
-                            <a href="{% url 'customer_menu' restaurant.id username %}" class="btn-action btn-view">View Menu</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="d-none d-md-block">
+            <span class="badge bg-white text-dark border p-2 px-3 rounded-pill shadow-sm">
+                📍 Showing restaurants near you
+            </span>
         </div>
     </div>
-</body>
-</html>
+
+    <div class="row g-4 animate-up" style="animation-delay: 0.1s;">
+        {% for restaurant in restaurants %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="meal-card h-100 p-0 overflow-hidden">
+                <div class="position-relative">
+                    <img src="{{ restaurant.picture|default:'https://via.placeholder.com/400x200' }}" 
+                         class="w-100" style="height: 200px; object-fit: cover;" alt="{{ restaurant.name }}">
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span class="badge bg-white text-dark shadow-sm fw-bold">
+                            <span class="text-warning">★</span> {{ restaurant.rating }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h4 class="fw-bold mb-0 text-truncate" style="max-width: 80%;">{{ restaurant.name }}</h4>
+                    </div>
+                    <p class="text-muted small mb-3 text-truncate">{{ restaurant.cuisines }}</p>
+                    
+                    <div class="d-flex align-items-center justify-content-between mt-auto">
+                        <span class="text-success small fw-bold">
+                            <i class="bi bi-clock"></i> 25-35 mins
+                        </span>
+                        <a href="{% url 'customer_menu' restaurant.id username %}" 
+                           class="btn btn-coral px-4 fw-bold rounded-pill shadow-sm">
+                            View Menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h3 class="text-muted">No restaurants found wizards...</h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

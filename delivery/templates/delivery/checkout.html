@@ -1,37 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Checkout - MealMate</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
-</head>
-<body style="background: var(--bg-gradient); min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+<!doctype html>
+{% extends 'delivery/base.html' %}
+{% load static %}
 
-    <div class="table-card" style="max-width: 500px; width: 90%; padding: 40px; text-align: center;">
-        <img src="{% static 'delivery/images/meal_mate.png' %}" style="height: 60px; margin-bottom: 20px;">
-        
-        <h2 style="color: var(--text-main);">Confirm Your Order</h2>
-        <p style="color: var(--text-muted);">You are about to pay for your delicious meal.</p>
-        
-        <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin: 25px 0;">
-            <span style="display: block; font-size: 0.9rem; color: var(--text-muted);">Total Amount</span>
-            <span style="font-size: 2rem; font-weight: 800; color: var(--text-main);">₹{{ total_price }}</span>
+{% block title %}Checkout - Meal-Mate{% endblock %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="meal-card animate-up p-5 text-center shadow-lg" style="max-width: 500px; width: 100%;">
+        <img src="{% static 'delivery/images/meal_mate.png' %}" alt="Meal-Mate" class="mb-3" style="height: 70px;">
+        <h2 class="fw-bold">Confirm & <span class="text-coral">Pay</span></h2>
+        <p class="text-muted mb-4">You're just one step away from your magical meal!</p>
+
+        <div class="bg-light rounded-4 p-4 mb-4 border">
+            <span class="text-uppercase small fw-bold text-muted d-block mb-1">Total Payable Amount</span>
+            <span class="display-5 fw-extrabold text-dark">₹{{ total_price }}</span>
+            <div class="mt-2 small text-success fw-bold">
+                <i class="bi bi-shield-check"></i> Secure SSL Encryption
+            </div>
         </div>
 
-        <button id="rzp-button1" class="btn-checkout" style="width: 100%;">Pay Securely Now</button>
-        <br><br>
-        <a href="{% url 'show_cart_page' username %}" style="color: var(--primary); text-decoration: none; font-weight: 600;">Back to Cart</a>
-    </div>
+        <button id="rzp-button1" class="btn btn-coral w-100 py-3 fw-bold rounded-pill shadow mb-3">
+            <i class="bi bi-credit-card-2-front me-2"></i> PAY SECURELY NOW
+        </button>
 
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script>
+        <div class="d-flex justify-content-center align-items-center gap-3 mt-2">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" alt="Razorpay" height="15" style="opacity: 0.6;">
+        </div>
+
+        <hr class="my-4">
+        
+        <a href="{% url 'show_cart_page' username %}" class="text-muted small text-decoration-none fw-medium">
+            <i class="bi bi-arrow-left"></i> Cancel and go back
+        </a>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
     var options = {
         "key": "{{ razorpay_key_id }}", 
         "amount": "{{ amount_paise }}", 
         "currency": "INR",
-        "name": "MealMate",
-        "description": "Food Order Payment",
+        "name": "Meal-Mate",
+        "description": "Food Order Payment #{{ order_id }}",
+        "image": "{% static 'delivery/images/meal_mate.png' %}",
         "order_id": "{{ order_id }}", 
         "handler": function (response){
             // On success, redirect to the orders page
@@ -49,6 +61,5 @@
         rzp1.open();
         e.preventDefault();
     }
-    </script>
-</body>
-</html>
+</script>
+{% endblock %}

@@ -1,65 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Menu Item - {{ menu_item.name }} | Meal-Mate</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'delivery/css/update_menuItem.css' %}">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Update Menu Item Information</h1>
-            <p>Editing: <strong>{{ item.name }}</strong></p>
+<!doctype html>
+{% extends 'delivery/base.html' %}
+{% load static %}
+
+{% block title %}Update {{ item.name }} - Meal-Mate{% endblock %}
+
+{% block content %}
+<div class="container py-5 d-flex justify-content-center">
+    <div class="col-12 col-md-10 col-lg-6">
+        
+        <div class="mb-4 animate-up">
+            <a href="{% url 'restaurant_menu' item.restaurant.id %}" class="text-decoration-none text-muted small fw-bold">
+                <i class="bi bi-arrow-left"></i> BACK TO MENU
+            </a>
         </div>
 
-        <div class="form-container">
+        <div class="meal-card p-5 border-0 shadow-lg animate-up" style="animation-delay: 0.1s;">
+            <div class="text-center mb-5">
+                <div class="mb-3">
+                    <img src="{{ item.picture|default:'https://via.placeholder.com/100' }}" 
+                         alt="{{ item.name }}" 
+                         class="rounded-circle shadow-sm border border-4 border-white"
+                         style="width: 100px; height: 100px; object-fit: cover; margin-top: -80px;">
+                </div>
+                <h2 class="fw-bold mb-1">Update <span class="text-coral">Menu Item</span></h2>
+                <p class="text-muted">You are editing: <strong>{{ item.name }}</strong></p>
+            </div>
+
             <form method="POST" action="{% url 'update_menuItem' item.id %}">
                 {% csrf_token %}
 
                 {% if error %}
-                    <div class="error-message">{{ error }}</div>
+                    <div class="alert alert-danger rounded-4 mb-4 border-0 shadow-sm">{{ error }}</div>
                 {% endif %}
 
-                <div class="form-group">
-                    <label for="name">Item Name:</label>
-                    <input type="text" id="name" name="name" 
+                <div class="mb-4">
+                    <label for="name" class="form-label small fw-bold text-muted text-uppercase">Item Name</label>
+                    <input type="text" id="name" name="name" class="form-control form-control-lg rounded-3" 
                            value="{{ item.name }}" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <input type="text" id="description" name="description" 
-                           value="{{ item.description }}" 
-                           placeholder="Enter a brief description of the menu item" required>
+                <div class="mb-4">
+                    <label for="description" class="form-label small fw-bold text-muted text-uppercase">Description</label>
+                    <textarea id="description" name="description" class="form-control rounded-3" 
+                              rows="3" placeholder="Describe the flavors..." required>{{ item.description }}</textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="price">Price:</label>
-                    <input type="number" id="price" name="price" 
-                           value="{{ item.price }}" required>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-5">
+                        <label for="price" class="form-label small fw-bold text-muted text-uppercase">Price (₹)</label>
+                        <input type="number" id="price" name="price" class="form-control rounded-3" 
+                               value="{{ item.price }}" required>
+                    </div>
+                    <div class="col-md-7">
+                        <label for="picture" class="form-label small fw-bold text-muted text-uppercase">Image URL</label>
+                        <input type="url" id="picture" name="picture" class="form-control rounded-3" 
+                               value="{{ item.picture }}" placeholder="https://...">
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="is_veg">Is Vegetarian:</label>
-                    <input type="checkbox" id="is_veg" name="is_veg"
+                <div class="form-check form-switch mb-5">
+                    <input class="form-check-input" type="checkbox" id="is_veg" name="is_veg" 
                            {% if item.is_veg %}checked{% endif %}>
+                    <label class="form-check-label fw-bold small ms-2" for="is_veg">Vegetarian Dish</label>
                 </div>
 
-                <div class="form-group">
-                    <label for="picture">Image URL:</label>
-                    <input type="url" id="picture" name="picture" 
-                           value="{{ item.picture }}" 
-                           placeholder="https://example.com/menu_item.jpg">
-                </div>
-
-                <div class="button-group">
-                    <button type="submit" class="update-btn">Update Menu Item</button>
-                    <a href="{% url 'restaurant_menu' item.restaurant.id %}" class="cancel-btn">Cancel</a>
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <button type="submit" class="btn btn-coral w-100 py-3 fw-bold rounded-pill shadow">
+                            SAVE CHANGES
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{% url 'restaurant_menu' item.restaurant.id %}" 
+                           class="btn btn-light w-100 py-3 fw-bold rounded-pill text-muted">
+                            CANCEL
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

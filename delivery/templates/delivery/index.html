@@ -1,59 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meal-Mate - Food Delivery Wizards</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'delivery/css/index.css' %}">
-</head>
-<body>
-    <div class="container">
-    <div class="hero-section">
-        <img src="{% static 'delivery/images/meal_mate.png' %}" alt="Meal-Mate Logo" class="main-logo">
-        <h1>Food Delivery <span class="magic-text">Wizards</span></h1>
-        <p class="hero-subtitle">Bringing the magic of top-tier cuisine straight to your doorstep.</p>
+<!doctype html>
+{% extends 'delivery/base.html' %}
+{% load static %}
+
+{% block title %}Meal-Mate - Food Delivery Wizards{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center animate-up">
+    
+    <div class="mb-5">
+        <img src="{% static 'delivery/images/meal_mate.png' %}" alt="Meal-Mate Logo" class="main-logo mb-3">
+        <h1 class="display-3 fw-extrabold text-dark">
+            Food Delivery <span class="magic-badge">Wizards</span>
+        </h1>
+        <p class="lead text-dark fw-medium mx-auto mt-3" style="max-width: 650px;">
+            Bringing the magic of top-tier cuisine straight to your doorstep.
+        </p>
     </div>
 
-    <div class="main-content">
-        <div class="dual-cards">
-            <div class="index-card">
-                <div class="card-icon">🔑</div>
-                <h2>SIGN IN</h2>
-                <p class="user-type">Welcome back, Wizard!</p>
-                <form action="signin/" method="get">
-                    <button type="submit" class="primary-btn">SIGN IN</button>
-                </form>
-            </div>
-
-            <div class="index-card">
-                <div class="card-icon">✨</div>
-                <h2>SIGN UP</h2>
-                <p class="user-type">Join the magical feast.</p>
-                <form action="signup/" method="get">
-                    <button type="submit" class="secondary-btn">SIGN UP</button>
-                </form>
+    <div class="row g-4 justify-content-center">
+        <div class="col-11 col-md-5 col-lg-4">
+            <div class="index-card h-100">
+                <div class="p-4 flex-grow-1 d-flex flex-column align-items-center">
+                    <div class="display-3 mb-2">🔑</div>
+                    <h2 class="fw-bold h3">SIGN IN</h2>
+                    <p class="text-muted small">Welcome back, Wizard!</p>
+                </div>
+                <a href="{% url 'signin' %}" class="btn btn-coral btn-flush w-100 py-3 fw-bold">GO TO SIGNIN</a>
             </div>
         </div>
 
-        <div class="features-grid">
-            <div class="feature-item">
-                <span class="feature-icon">🚀</span>
-                <h4>Fastest Delivery</h4>
-                <p>Lightning speed from the oven to your table.</p>
+        <div class="col-11 col-md-5 col-lg-4">
+            <div class="index-card h-100">
+                <div class="p-4 flex-grow-1 d-flex flex-column align-items-center">
+                    <div class="display-3 mb-2">✨</div>
+                    <h2 class="fw-bold h3">SIGN UP</h2>
+                    <p class="text-muted small">Join the magical feast.</p>
+                </div>
+                <a href="{% url 'signup' %}" class="btn btn-dark btn-flush w-100 py-3 fw-bold">CREATE ACCOUNT</a>
             </div>
-            <div class="feature-item">
-                <span class="feature-icon">🥘</span>
-                <h4>Top Restaurants</h4>
-                <p>Only the best-rated kitchens in your city.</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-5">
+        <div class="col-12 col-md-4">
+            <div class="feature-item p-4">
+                <span class="fs-1 d-block mb-2">🚀</span>
+                <h5 class="fw-bold">Fastest Delivery</h5>
+                <p class="small text-muted mb-0">Lightning speed from the oven to your table.</p>
             </div>
-            <div class="feature-item">
-                <span class="feature-icon">📍</span>
-                <h4>Live Tracking</h4>
-                <p>Follow your meal's journey in real-time.</p>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="feature-item p-4">
+                <span class="fs-1 d-block mb-2">🥘</span>
+                <h5 class="fw-bold">Top Restaurants</h5>
+                <p class="small text-muted mb-0">Only the best-rated kitchens in your city.</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="feature-item p-4">
+                <span class="fs-1 d-block mb-2">📍</span>
+                <h5 class="fw-bold">Live Tracking</h5>
+                <p class="small text-muted mb-0">Follow your meal's journey in real-time.</p>
             </div>
         </div>
     </div>
 </div>
-</body>
-</html>
+{% endblock %}

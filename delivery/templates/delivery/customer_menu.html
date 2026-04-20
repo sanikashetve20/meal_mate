@@ -1,73 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ restaurant.name }} - Menu</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'delivery/css/customer_style.css' %}">
-</head>
-<body>
+<!doctype html>
+{% extends 'delivery/base.html' %}
+{% load static %}
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-left-group">
-                <img src="{% static 'delivery/images/meal_mate.png' %}" class="logo-img">
-                <span class="welcome-text">Welcome, <strong>{{ username|default:'Guest' }}!</strong></span>
+{% block title %}{{ restaurant.name }} Menu - Meal-Mate{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="meal-card border-0 shadow-sm p-4 mb-5 animate-up">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <img src="{{ restaurant.picture|default:'https://via.placeholder.com/400x250' }}" 
+                     class="img-fluid rounded-4 shadow-sm" alt="{{ restaurant.name }}">
             </div>
-
-            <div class="nav-right">
-                <a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="nav-link">Home</a>
-                <a href="{% url 'show_cart_page' username %}" class="nav-link">View Cart</a>
-                <a href="{% url 'signin' %}" class="logout-btn">Logout</a>
+            <div class="col-md-8 mt-3 mt-md-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-2">
+                        <li class="breadcrumb-item"><a href="{% url 'show_restaurant_page' %}?username={{ username }}" class="text-coral text-decoration-none">Restaurants</a></li>
+                        <li class="breadcrumb-item active">{{ restaurant.name }}</li>
+                    </ol>
+                </nav>
+                <h1 class="fw-bold display-5 mb-1">{{ restaurant.name }}</h1>
+                <p class="text-muted fs-5 mb-0"><i class="bi bi-shop me-2"></i>{{ restaurant.cuisines }}</p>
+                <div class="mt-3">
+                    <span class="badge bg-light text-dark border p-2 px-3 rounded-pill">
+                        <span class="text-warning">★</span> {{ restaurant.rating }} Rating
+                    </span>
+                </div>
             </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="rest-header">
-            <img src="{{ restaurant.picture|default:'https://via.placeholder.com/400x250' }}" class="rest-img-lg">
-            <div class="rest-info">
-                <h1 style="margin:0;">{{ restaurant.name }}</h1>
-                <p style="color: #636e72; margin-top: 5px;">{{ restaurant.cuisines }}</p>
-            </div>
-        </div>
-
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 100px;">Dish</th>
-                        <th style="width: 180px;">Item Name</th>
-                        <th>Description</th>
-                        <th style="width: 100px;">Price</th>
-                        <th style="width: 120px;">Type</th>
-                        <th style="width: 150px;">Order</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in menu_items %}
-                    <tr>
-                        <td><img src="{{ item.picture|default:'https://via.placeholder.com/100' }}" class="thumb-img"></td>
-                        <td><strong>{{ item.name }}</strong></td>
-                        <td><div class="desc-box">{{ item.description }}</div></td>
-                        <td><strong>{{ item.price }}</strong></td>
-                        <td>
-                            <span class="badge {% if item.is_veg %}veg{% else %}nonveg{% endif %}">
-                                {% if item.is_veg %}VEG{% else %}NON-VEG{% endif %}
-                            </span>
-                        </td>
-                        <td>
-                            <form method="POST" action="{% url 'add_to_cart' item.id username %}">
-                                {% csrf_token %}
-                                <button type="submit" onclick="return confirm('Are you sure you want to add this item to your cart?');" class="btn-action btn-add">Add to Cart</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
     </div>
-</body>
-</html>
+
+    <h3 class="fw-bold mb-4">Available <span class="text-coral">Dishes</span></h3>
+    
+    <div class="row g-4">
+        {% for item in menu_items %}
+        <div class="col-12 col-lg-6 animate-up">
+            <div class="meal-card p-3 h-100 border-0 shadow-sm">
+                <div class="d-flex align-items-center">
+                    <img src="{{ item.picture|default:'https://via.placeholder.com/100' }}" 
+                         class="rounded-3 shadow-sm" style="width: 100px; height: 100px; object-fit: cover;" alt="{{ item.name }}">
+                    
+                    <div class="ms-3 flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="fw-bold mb-1">{{ item.name }}</h5>
+                                <span class="badge {% if item.is_veg %}bg-success{% else %}bg-danger{% endif %} mb-2" style="font-size: 0.6rem;">
+                                    {% if item.is_veg %}VEG{% else %}NON-VEG{% endif %}
+                                </span>
+                            </div>
+                            <span class="fw-bold text-coral fs-5">₹{{ item.price }}</span>
+                        </div>
+                        <p class="text-muted small mb-3 text-truncate-2" style="max-width: 300px;">
+                            {{ item.description }}
+                        </p>
+                        
+                        <form method="POST" action="{% url 'add_to_cart' item.id username %}" class="d-flex justify-content-end">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-coral btn-sm px-4 fw-bold rounded-pill shadow-sm py-2">
+                                <i class="bi bi-plus-lg me-1"></i> ADD TO CART
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No items available in the menu yet!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
