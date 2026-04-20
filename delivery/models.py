@@ -4,8 +4,8 @@ from django.db import models
 class Customer(models.Model):
     username = models.CharField(max_length=20)
     password = models.CharField(max_length=20)
-    email = models.CharField(max_length=20)
-    address = models.CharField(max_length=50)
+    email = models.CharField(max_length=100)
+    address = models.CharField(max_length=255)
     mobile = models.CharField(max_length=10)
     
     def __str__(self):
