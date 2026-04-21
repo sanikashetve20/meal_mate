@@ -16,6 +16,14 @@ def signin(request):
 def signup(request):
     return render(request, 'delivery/signup.html')
 
+
+
+def admin_home(request):
+    return render(request, 'delivery/home.html')
+
+
+
+
 # Handle Login
 def handle_login(request):
     if request.method == 'POST':

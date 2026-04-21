@@ -21,6 +21,9 @@ urlpatterns = [
     
     path('restaurants/', views.show_restaurant_page, name='show_restaurant_page'),
     path('restaurants/add/', views.add_restaurant, name='add_restaurant'),
+
+    path('restaurants/add/home/', views.admin_home, name='admin_home'),
+
     path('restaurants/<int:restaurant_id>/', views.restaurant_page, name='restaurant_page'),
     path('restaurants/<int:restaurant_id>/menu/', views.restaurant_menu, name='restaurant_menu'),
     path('restaurants/<int:restaurant_id>/update/', views.update_restaurant, name='update_restaurant'),
